@@ -66,8 +66,9 @@ public class FilesStorageServiceImpl implements FilesStorageService {
 	}
 
 	@Override
-	public void deleteAll() {
-		FileSystemUtils.deleteRecursively ( root.toFile ( ) );
+	public void deleteAll(String root) {
+		Path rootbenevole = Paths.get ( root );
+		FileSystemUtils.deleteRecursively ( rootbenevole.toFile ( ) );
 	}
 
 	@Override
