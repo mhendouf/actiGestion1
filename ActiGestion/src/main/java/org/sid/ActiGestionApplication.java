@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ActiGestionApplication {
-
+//moh
 	public static void main(String[] args) {
-		SpringApplication.run(ActiGestionApplication.class, args);
+		SpringApplication.run ( ActiGestionApplication.class , args );
 	}
 
 }
