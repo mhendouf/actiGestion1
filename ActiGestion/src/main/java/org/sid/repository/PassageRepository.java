@@ -1,5 +1,15 @@
 package org.sid.repository;
 
-public interface PassageRepository {
+import java.util.Date;
+import java.util.List;
 
+import org.sid.entity.Passage;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource
+public interface PassageRepository extends JpaRepository<Passage, Long> {
+	@Query(value = "SELECT passage FROM Passage passage where passage.passageDate= :passageDate and passage.idBenevole= :idBenevole ")
+	List<Passage> findPassages(Date passageDate, Long idBenevole);
 }
