@@ -10,6 +10,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
 public interface PassageRepository extends JpaRepository<Passage, Long> {
-	@Query(value = "SELECT passage FROM Passage passage where passage.passageDate= :passageDate and passage.idBenevole= :idBenevole ")
+	@Query(value = "SELECT passage FROM Passage passage where MONTH( passage.passageDate )= MONTH( :passageDate ) and passage.idBenevole= :idBenevole")
+
 	List<Passage> findPassages(Date passageDate, Long idBenevole);
 }
