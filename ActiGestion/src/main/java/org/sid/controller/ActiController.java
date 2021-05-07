@@ -1,5 +1,7 @@
 package org.sid.controller;
 
+import java.io.ByteArrayInputStream;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +11,19 @@ import org.sid.entity.Acti;
 import org.sid.entity.Benevole;
 import org.sid.exception.RessourceNotFoundException;
 import org.sid.repository.ActiRepository;
+import org.sid.service.ExportActiPdf;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,9 +35,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ActiController {
 	@Autowired
 	ActiRepository actiRepository;
+	@Autowired
+	ExportActiPdf exportPdfService;
 
 	@GetMapping("/acti")
-	public List<Acti> getAllBenevole() {
+	public List<Acti> getAllActis() {
 		System.out.println ( "Actiiiiiiiiiiiiiiiii" );
 		return actiRepository.findAll ( );
 	}
@@ -50,8 +59,9 @@ public class ActiController {
 	}
 
 	@PostMapping("/acti")
-	public Acti AjouterActi(@RequestParam("acti") Acti acti) {
-		return actiRepository.save ( acti );
+	public Acti AjouterActi(@RequestBody Acti info) {
+		System.out.println ( "ajouter" );
+		return actiRepository.save ( (Acti) info );
 	}
 
 	@DeleteMapping("/acti/{id}")
@@ -81,15 +91,18 @@ public class ActiController {
 
 		Optional<Acti> actiInfo = actiRepository.findById ( id );
 		if (actiInfo.isPresent ( )) {
-			/*
-			 * Client ar = Clientinfo.get ( ); ar.setCode ( arti.getCode ( ) );
-			 * ar.setLibelle ( arti.getLibelle ( ) ); ar.setFodec ( arti.getFodec ( ) );
-			 * ar.setId_cat ( arti.getId_cat ( ) ); ar.setId_scat ( arti.getId_scat ( ) );
-			 * ar.setPa ( arti.getPa ( ) ); ar.setPv ( arti.getPv ( ) ); ar.setTva (
-			 * arti.getTva ( ) ); ar.setDc ( arti.getDc ( ) );
-			 */
+
 			return new ResponseEntity<> ( actiRepository.save ( acti ) , HttpStatus.OK );
 		} else
 			return new ResponseEntity<> ( HttpStatus.NOT_FOUND );
+	}
+
+	@PutMapping("/acti/pdf")
+	public ResponseEntity<InputStreamResource> exportPdf(@RequestBody Collection<Acti> actis) {
+		ByteArrayInputStream bais = exportPdfService.actiPDFreport ( getAllActis ( ) );
+		HttpHeaders headers = new HttpHeaders ( );
+		headers.add ( "Content-Disposition" , "filename=Actis.pdf" );
+		return ResponseEntity.ok ( ).headers ( headers ).contentType ( MediaType.APPLICATION_PDF )
+				.body ( new InputStreamResource ( bais ) );
 	}
 }
