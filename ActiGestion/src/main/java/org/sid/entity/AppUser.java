@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,10 +25,9 @@ public class AppUser {
 	@GeneratedValue
 	private Long id;
 	@Column(unique = true)
-	private String nom;
-	private String prenom;
-	@JsonIgnore
-	private String pwd;
+	private String username;
+	// @JsonIgnore
+	private String password;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<AppRoles> roles = new ArrayList<> ( );
 }
