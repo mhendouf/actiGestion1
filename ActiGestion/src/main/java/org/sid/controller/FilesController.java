@@ -73,7 +73,7 @@ public class FilesController {
 	@ResponseBody
 	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
 
-		final String SEPARATEUR = "&%$§/(=";
+		final String SEPARATEUR = "²";
 		String mots[] = filename.split ( SEPARATEUR );
 		String id = mots[0];
 		filename = mots[1];

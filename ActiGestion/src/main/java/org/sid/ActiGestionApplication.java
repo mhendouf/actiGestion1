@@ -1,7 +1,5 @@
 package org.sid;
 
-import org.sid.entity.AppRoles;
-import org.sid.entity.AppUser;
 import org.sid.repository.UserRepository;
 import org.sid.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,19 +37,18 @@ public class ActiGestionApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args0) throws Exception {
 
-		System.out.println ( "RUN OK *******************" );
-
-		AppUser admin = new AppUser ( null , "admin" , "1234" , null );
-		AppUser user = new AppUser ( null , "user" , "1234" , null );
-		accountService.saveUser ( admin );
-		accountService.saveUser ( user );
-		AppRoles adminRole = new AppRoles ( null , "ADMIN" );
-		AppRoles userRole = new AppRoles ( null , "USER" );
-		accountService.saveRole ( adminRole );
-		accountService.saveRole ( userRole );
-		accountService.addRolesToUser ( "admin" , "USER" );
-		accountService.addRolesToUser ( "admin" , "ADMIN" );
-		accountService.addRolesToUser ( "user" , "USER" );
+		/*
+		 * System.out.println ( "RUN OK *******************" );
+		 * 
+		 * AppUser admin = new AppUser ( null , "admin" , "1234" , null ); AppUser user
+		 * = new AppUser ( null , "user" , "1234" , null ); accountService.saveUser (
+		 * admin ); accountService.saveUser ( user ); AppRoles adminRole = new AppRoles
+		 * ( null , "ADMIN" ); AppRoles userRole = new AppRoles ( null , "USER" );
+		 * accountService.saveRole ( adminRole ); accountService.saveRole ( userRole );
+		 * accountService.addRolesToUser ( "admin" , "USER" );
+		 * accountService.addRolesToUser ( "admin" , "ADMIN" );
+		 * accountService.addRolesToUser ( "user" , "USER" );
+		 */
 
 	}
 
