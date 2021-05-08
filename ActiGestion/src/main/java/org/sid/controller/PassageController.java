@@ -1,5 +1,7 @@
 package org.sid.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -26,21 +28,26 @@ public class PassageController {
 	}
 
 	@PostMapping("/passage")
-	public Passage savePassage(@RequestParam("id") String id) throws RessourceNotFoundException {
-
-		Date now = new Date ( );
-		Long lo = 7L;
-		Passage p1 = passageRepository.findById ( lo )
-				.orElseThrow ( () -> new RessourceNotFoundException ( "Benevole introuvable" ) );
-
+	public Passage savePassage(@RequestParam("id") String id, @RequestParam("date") String date)
+			throws RessourceNotFoundException, ParseException {
+		Passage p1 = null;
 		Long l = Long.parseLong ( id );
-		List<Passage> passageListe = passageRepository.findPassages ( p1.getPassageDate ( ) , l );
-		System.out.println ( "PASSSAAAAAAAAAAAAAAAAAge : " + passageListe.size ( ) );
+		date = date.substring ( 1 , date.length ( ) - 1 );
+		Date now = new SimpleDateFormat ( "yyyy/MM/dd" ).parse ( date );
+		// Date now = new Date ( );
+		try {
+			p1 = passageRepository.findPassage ( now , l );
+			System.out.println ( "PASSSAAAAAAAAAAAAAAAAAge tryyyyy : " + date );
+		} catch (Exception e) {
 
-		for (int i = 0; i < passageListe.size ( ); ++i) {
-			System.out.println ( "PASSSAAAAAAAAAAAAAAAAAge : " + i );
+			p1 = passageRepository.save ( new Passage ( null , now , l ) );
+			System.out.println ( "PASSSAAAAAAAAAAAAAAAAAge catch : " + date );
 		}
-		Passage p = passageRepository.save ( new Passage ( null , now , l ) );
-		return p;
+
+		return p1;
+	}
+
+	public boolean PassageExist() {
+		return true;
 	}
 }
